@@ -1,0 +1,56 @@
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <h1 class="section-title">Manage Products</h1>
+      <a href="/admin/products/add" class="btn btn-primary" id="addProductLink">+ Add Product</a>
+    </div>
+
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Active</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% products.forEach(product => { %>
+            <tr id="admin-product-<%= product._id %>">
+              <td>
+                <% if (product.image) { %>
+                  <img src="<%= product.image %>" alt="" class="table-thumb">
+                <% } else { %>
+                  📦
+                <% } %>
+              </td>
+              <td><%= product.name %></td>
+              <td><%= product.category ? product.category.name : '—' %></td>
+              <td>
+                <% if (product.discountPrice) { %>
+                  ₹<%= product.discountPrice %> <small style="text-decoration:line-through">₹<%= product.price %></small>
+                <% } else { %>
+                  ₹<%= product.price %>
+                <% } %>
+              </td>
+              <td><%= product.stock %></td>
+              <td><%= product.isActive ? '✅' : '❌' %></td>
+              <td class="action-cell">
+                <a href="/admin/products/edit/<%= product._id %>" class="btn btn-sm btn-secondary">Edit</a>
+                <form action="/admin/products/delete/<%= product._id %>" method="POST" style="display:inline">
+                  <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Deactivate this product?')">Deactivate</button>
+                </form>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+
+    <a href="/admin" class="back-link">← Back to Dashboard</a>
+  </div>
+</section>

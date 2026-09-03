@@ -1,0 +1,66 @@
+<section class="hero-banner">
+  <div class="container">
+    <div class="hero-content">
+      <h1>Groceries delivered in <span class="highlight">minutes</span></h1>
+      <p>Fresh fruits, vegetables, dairy, snacks & more — right to your doorstep.</p>
+      <a href="/products" class="btn btn-primary" id="shopNowBtn">Shop Now</a>
+    </div>
+  </div>
+</section>
+
+<section class="section categories-section">
+  <div class="container">
+    <h2 class="section-title">Shop by Category</h2>
+    <div class="categories-grid">
+      <% categories.forEach(cat => { %>
+        <a href="/products?category=<%= cat.slug %>" class="category-card" id="cat-<%= cat.slug %>">
+          <div class="category-icon"><%= cat.image || '🛒' %></div>
+          <span class="category-name"><%= cat.name %></span>
+        </a>
+      <% }); %>
+    </div>
+  </div>
+</section>
+
+<section class="section products-section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Popular Products</h2>
+      <a href="/products" class="view-all">View All →</a>
+    </div>
+    <div class="products-grid">
+      <% products.forEach(product => { %>
+        <div class="product-card" id="product-<%= product._id %>">
+          <a href="/products/<%= product._id %>" class="product-image-link">
+            <% if (product.image) { %>
+              <img src="<%= product.image %>" alt="<%= product.name %>" class="product-image" loading="lazy">
+            <% } else { %>
+              <div class="product-image product-image-placeholder">📦</div>
+            <% } %>
+          </a>
+          <div class="product-info">
+            <span class="product-unit"><%= product.unit %></span>
+            <a href="/products/<%= product._id %>" class="product-name"><%= product.name %></a>
+            <div class="product-pricing">
+              <% if (product.discountPrice) { %>
+                <span class="price-current">₹<%= product.discountPrice %></span>
+                <span class="price-original">₹<%= product.price %></span>
+              <% } else { %>
+                <span class="price-current">₹<%= product.price %></span>
+              <% } %>
+            </div>
+            <% if (product.stock > 0) { %>
+              <form action="/cart/add" method="POST" class="add-to-cart-form">
+                <input type="hidden" name="productId" value="<%= product._id %>">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" class="btn btn-add-cart">Add</button>
+              </form>
+            <% } else { %>
+              <span class="out-of-stock-badge">Out of Stock</span>
+            <% } %>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,50 @@
+<section class="section">
+  <div class="container">
+    <h1 class="section-title">Manage Categories</h1>
+
+    <!-- Add Category -->
+    <div class="address-form-card">
+      <h2>Add Category</h2>
+      <form action="/admin/categories/add" method="POST" class="inline-form-row" id="addCategoryForm">
+        <input type="text" name="name" placeholder="Category name" required>
+        <input type="text" name="image" placeholder="Emoji or image URL (e.g. 🥦)">
+        <button type="submit" class="btn btn-primary">Add</button>
+      </form>
+    </div>
+
+    <!-- Existing Categories -->
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Icon</th>
+            <th>Name</th>
+            <th>Slug</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% categories.forEach(cat => { %>
+            <tr id="admin-cat-<%= cat._id %>">
+              <td><%= cat.image || '🛒' %></td>
+              <td><%= cat.name %></td>
+              <td><code><%= cat.slug %></code></td>
+              <td class="action-cell">
+                <form action="/admin/categories/edit/<%= cat._id %>" method="POST" class="inline-form-row">
+                  <input type="text" name="name" value="<%= cat.name %>" required>
+                  <input type="text" name="image" value="<%= cat.image %>" placeholder="Emoji">
+                  <button type="submit" class="btn btn-sm btn-secondary">Save</button>
+                </form>
+                <form action="/admin/categories/delete/<%= cat._id %>" method="POST" style="display:inline">
+                  <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this category?')">Delete</button>
+                </form>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+
+    <a href="/admin" class="back-link">← Back to Dashboard</a>
+  </div>
+</section>

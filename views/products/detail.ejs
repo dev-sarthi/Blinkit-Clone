@@ -1,0 +1,84 @@
+<section class="section product-detail-section">
+  <div class="container">
+    <a href="javascript:history.back()" class="back-link">← Back</a>
+
+    <div class="product-detail">
+      <div class="product-detail-image">
+        <% if (product.image) { %>
+          <img src="<%= product.image %>" alt="<%= product.name %>" id="productDetailImage">
+        <% } else { %>
+          <div class="product-image-placeholder large">📦</div>
+        <% } %>
+      </div>
+
+      <div class="product-detail-info">
+        <span class="product-category-badge"><%= product.category.name %></span>
+        <h1 id="productDetailName"><%= product.name %></h1>
+        <span class="product-unit-detail"><%= product.unit %></span>
+
+        <div class="product-pricing-detail">
+          <% if (product.discountPrice) { %>
+            <span class="price-current-lg">₹<%= product.discountPrice %></span>
+            <span class="price-original-lg">₹<%= product.price %></span>
+            <span class="discount-badge"><%= Math.round((1 - product.discountPrice / product.price) * 100) %>% OFF</span>
+          <% } else { %>
+            <span class="price-current-lg">₹<%= product.price %></span>
+          <% } %>
+        </div>
+
+        <% if (product.description) { %>
+          <p class="product-description"><%= product.description %></p>
+        <% } %>
+
+        <% if (product.stock > 0) { %>
+          <p class="stock-info in-stock">✅ In Stock (<%= product.stock %> available)</p>
+          <form action="/cart/add" method="POST" class="add-to-cart-detail-form" id="addToCartForm">
+            <input type="hidden" name="productId" value="<%= product._id %>">
+            <div class="quantity-selector">
+              <label for="quantity">Qty:</label>
+              <select name="quantity" id="quantity">
+                <% for (let i = 1; i <= Math.min(product.stock, 10); i++) { %>
+                  <option value="<%= i %>"><%= i %></option>
+                <% } %>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg" id="addToCartBtn">🛒 Add to Cart</button>
+          </form>
+        <% } else { %>
+          <p class="stock-info out-of-stock">❌ Out of Stock</p>
+        <% } %>
+      </div>
+    </div>
+
+    <% if (related && related.length > 0) { %>
+      <div class="related-products">
+        <h2 class="section-title">You may also like</h2>
+        <div class="products-grid">
+          <% related.forEach(prod => { %>
+            <div class="product-card" id="related-<%= prod._id %>">
+              <a href="/products/<%= prod._id %>" class="product-image-link">
+                <% if (prod.image) { %>
+                  <img src="<%= prod.image %>" alt="<%= prod.name %>" class="product-image" loading="lazy">
+                <% } else { %>
+                  <div class="product-image product-image-placeholder">📦</div>
+                <% } %>
+              </a>
+              <div class="product-info">
+                <span class="product-unit"><%= prod.unit %></span>
+                <a href="/products/<%= prod._id %>" class="product-name"><%= prod.name %></a>
+                <div class="product-pricing">
+                  <% if (prod.discountPrice) { %>
+                    <span class="price-current">₹<%= prod.discountPrice %></span>
+                    <span class="price-original">₹<%= prod.price %></span>
+                  <% } else { %>
+                    <span class="price-current">₹<%= prod.price %></span>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</section>

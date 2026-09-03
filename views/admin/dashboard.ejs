@@ -1,0 +1,68 @@
+<section class="section">
+  <div class="container">
+    <h1 class="section-title">Admin Dashboard</h1>
+
+    <div class="stats-grid">
+      <div class="stat-card" id="statProducts">
+        <span class="stat-icon">📦</span>
+        <div class="stat-body">
+          <span class="stat-value"><%= totalProducts %></span>
+          <span class="stat-label">Products</span>
+        </div>
+      </div>
+      <div class="stat-card" id="statOrders">
+        <span class="stat-icon">🧾</span>
+        <div class="stat-body">
+          <span class="stat-value"><%= totalOrders %></span>
+          <span class="stat-label">Orders</span>
+        </div>
+      </div>
+      <div class="stat-card" id="statUsers">
+        <span class="stat-icon">👥</span>
+        <div class="stat-body">
+          <span class="stat-value"><%= totalUsers %></span>
+          <span class="stat-label">Users</span>
+        </div>
+      </div>
+      <div class="stat-card" id="statCategories">
+        <span class="stat-icon">🗂️</span>
+        <div class="stat-body">
+          <span class="stat-value"><%= totalCategories %></span>
+          <span class="stat-label">Categories</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-nav">
+      <a href="/admin/products" class="btn btn-secondary">Manage Products</a>
+      <a href="/admin/categories" class="btn btn-secondary">Manage Categories</a>
+      <a href="/admin/orders" class="btn btn-secondary">Manage Orders</a>
+    </div>
+
+    <h2>Recent Orders</h2>
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% recentOrders.forEach(order => { %>
+            <tr>
+              <td><a href="/admin/orders/<%= order._id %>">#<%= order._id.toString().slice(-8).toUpperCase() %></a></td>
+              <td><%= order.user ? order.user.name : 'Unknown' %></td>
+              <td>₹<%= order.totalAmount %></td>
+              <td><span class="status-badge status-<%= order.status %>"><%= order.status.replace(/_/g, ' ') %></span></td>
+              <td><%= order.createdAt.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) %></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

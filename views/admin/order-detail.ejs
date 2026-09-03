@@ -1,0 +1,65 @@
+<section class="section">
+  <div class="container">
+    <h1 class="section-title">Order #<%= order._id.toString().slice(-8).toUpperCase() %></h1>
+
+    <div class="order-detail-grid">
+      <div class="order-detail-card">
+        <h2>Customer</h2>
+        <p><strong><%= order.user ? order.user.name : 'Unknown' %></strong></p>
+        <% if (order.user) { %>
+          <p><%= order.user.email %></p>
+          <p><%= order.user.phone || '' %></p>
+        <% } %>
+      </div>
+
+      <div class="order-detail-card">
+        <h2>Delivery Address</h2>
+        <p><strong><%= order.address.label %></strong></p>
+        <p><%= order.address.fullAddress %></p>
+        <p><%= order.address.city %> — <%= order.address.pincode %></p>
+        <p>📞 <%= order.address.phone %></p>
+      </div>
+
+      <div class="order-detail-card">
+        <h2>Status & Payment</h2>
+        <p><span class="status-badge status-<%= order.status %>"><%= order.status.replace(/_/g, ' ') %></span></p>
+        <p><%= order.paymentMethod === 'cod' ? '💵 Cash on Delivery' : '💳 Mock Online' %></p>
+        <p><%= order.createdAt.toLocaleString('en-IN') %></p>
+
+        <form action="/admin/orders/<%= order._id %>/status" method="POST" style="margin-top:12px;">
+          <label for="status">Update Status:</label>
+          <select name="status" id="status">
+            <% ['placed','packed','out_for_delivery','delivered','cancelled'].forEach(s => { %>
+              <option value="<%= s %>" <%= order.status === s ? 'selected' : '' %>><%= s.replace(/_/g, ' ') %></option>
+            <% }); %>
+          </select>
+          <button type="submit" class="btn btn-primary btn-sm">Update</button>
+        </form>
+      </div>
+    </div>
+
+    <h2>Items</h2>
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr><th>Product</th><th>Price</th><th>Qty</th><th>Subtotal</th></tr>
+        </thead>
+        <tbody>
+          <% order.items.forEach(item => { %>
+            <tr>
+              <td><%= item.name %></td>
+              <td>₹<%= item.price %></td>
+              <td><%= item.quantity %></td>
+              <td>₹<%= item.price * item.quantity %></td>
+            </tr>
+          <% }); %>
+        </tbody>
+        <tfoot>
+          <tr><td colspan="3"><strong>Total</strong></td><td><strong>₹<%= order.totalAmount %></strong></td></tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <a href="/admin/orders" class="back-link">← Back to Orders</a>
+  </div>
+</section>

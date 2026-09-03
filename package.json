@@ -1,0 +1,30 @@
+{
+  "name": "blinkit-clone",
+  "version": "1.0.0",
+  "description": "QuickKart — Blinkit-style quick commerce web application",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "seed": "node utils/seed.js",
+    "dev": "node --watch app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.4.2",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.19.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.9.4",
+    "morgan": "^1.12.0",
+    "multer": "^2.3.0",
+    "winston": "^3.19.0"
+  }
+}

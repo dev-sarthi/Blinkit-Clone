@@ -1,0 +1,69 @@
+<section class="section">
+  <div class="container">
+    <h1 class="section-title">My Addresses</h1>
+
+    <!-- Add Address Form -->
+    <div class="address-form-card">
+      <h2>Add New Address</h2>
+      <form action="/user/addresses/add" method="POST" class="address-form" id="addAddressForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="label">Label</label>
+            <select name="label" id="label">
+              <option value="Home">Home</option>
+              <option value="Work">Work</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" name="phone" id="phone" placeholder="+91 9876543210" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="fullAddress">Full Address</label>
+          <textarea name="fullAddress" id="fullAddress" rows="2" placeholder="House No., Street, Area" required></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="city">City</label>
+            <input type="text" name="city" id="city" placeholder="Mumbai" required>
+          </div>
+          <div class="form-group">
+            <label for="pincode">Pincode</label>
+            <input type="text" name="pincode" id="pincode" placeholder="400001" required>
+          </div>
+        </div>
+        <div class="form-group checkbox-group">
+          <label><input type="checkbox" name="isDefault" value="true"> Set as default address</label>
+        </div>
+        <button type="submit" class="btn btn-primary" id="addAddressBtn">Add Address</button>
+      </form>
+    </div>
+
+    <!-- Saved Addresses -->
+    <% if (addresses.length > 0) { %>
+      <h2>Saved Addresses</h2>
+      <div class="addresses-grid">
+        <% addresses.forEach(addr => { %>
+          <div class="address-card-manage" id="addr-<%= addr._id %>">
+            <div class="address-card-header">
+              <strong><%= addr.label %></strong>
+              <% if (addr.isDefault) { %><span class="default-badge">Default</span><% } %>
+            </div>
+            <p><%= addr.fullAddress %></p>
+            <p><%= addr.city %> — <%= addr.pincode %></p>
+            <p>📞 <%= addr.phone %></p>
+            <div class="address-card-actions">
+              <form action="/user/addresses/delete/<%= addr._id %>" method="POST" style="display:inline;">
+                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Delete this address?')">Delete</button>
+              </form>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <p class="empty-state">No addresses saved yet.</p>
+    <% } %>
+  </div>
+</section>

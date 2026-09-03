@@ -1,0 +1,43 @@
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo">
+      <span class="logo-icon">⚡</span>
+      <span class="logo-text">QuickKart</span>
+    </a>
+
+    <form class="search-form" action="/products" method="GET" id="searchForm">
+      <input type="text" name="search" placeholder="Search for groceries, snacks, essentials..." value="<%= typeof search !== 'undefined' ? search : '' %>" class="search-input" id="searchInput">
+      <button type="submit" class="search-btn" id="searchBtn">🔍</button>
+    </form>
+
+    <nav class="nav-links" id="navLinks">
+      <% if (user) { %>
+        <a href="/cart" class="nav-link cart-link" id="cartLink">
+          🛒 Cart
+          <% if (cartCount > 0) { %>
+            <span class="cart-badge" id="cartBadge"><%= cartCount %></span>
+          <% } %>
+        </a>
+        <a href="/orders/history" class="nav-link" id="ordersLink">📦 Orders</a>
+        <div class="user-menu" id="userMenu">
+          <button class="user-menu-btn" id="userMenuBtn">
+            👤 <%= user.name.split(' ')[0] %>
+          </button>
+          <div class="user-dropdown" id="userDropdown">
+            <a href="/user/profile" id="profileLink">My Profile</a>
+            <a href="/user/addresses" id="addressesLink">Addresses</a>
+            <% if (user.role === 'admin') { %>
+              <a href="/admin" id="adminLink">Admin Panel</a>
+            <% } %>
+            <a href="/auth/logout" id="logoutLink">Logout</a>
+          </div>
+        </div>
+      <% } else { %>
+        <a href="/auth/login" class="nav-link btn-login" id="loginLink">Log In</a>
+        <a href="/auth/signup" class="nav-link btn-signup" id="signupLink">Sign Up</a>
+      <% } %>
+    </nav>
+
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">☰</button>
+  </div>
+</header>

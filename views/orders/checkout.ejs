@@ -1,0 +1,79 @@
+<section class="section">
+  <div class="container">
+    <h1 class="section-title">Checkout</h1>
+
+    <div class="checkout-layout">
+      <div class="checkout-main">
+        <!-- Delivery Address -->
+        <div class="checkout-section">
+          <h2>Delivery Address</h2>
+          <% if (addresses.length === 0) { %>
+            <p>No addresses saved. <a href="/user/addresses">Add an address</a> first.</p>
+          <% } else { %>
+            <div class="address-options">
+              <% addresses.forEach((addr, i) => { %>
+                <label class="address-option" id="address-option-<%= addr._id %>">
+                  <input type="radio" name="addressId" value="<%= addr._id %>" form="placeOrderForm"
+                    <%= (addr.isDefault || i === 0) ? 'checked' : '' %>>
+                  <div class="address-card">
+                    <strong><%= addr.label %></strong>
+                    <p><%= addr.fullAddress %></p>
+                    <p><%= addr.city %> — <%= addr.pincode %></p>
+                    <p>📞 <%= addr.phone %></p>
+                  </div>
+                </label>
+              <% }); %>
+            </div>
+          <% } %>
+        </div>
+
+        <!-- Payment Method -->
+        <div class="checkout-section">
+          <h2>Payment Method</h2>
+          <div class="payment-options">
+            <label class="payment-option">
+              <input type="radio" name="paymentMethod" value="cod" form="placeOrderForm" checked>
+              <span>💵 Cash on Delivery</span>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="paymentMethod" value="mock_online" form="placeOrderForm">
+              <span>💳 Mock Online Payment</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Summary Sidebar -->
+      <div class="cart-summary">
+        <h2>Order Summary</h2>
+        <div class="checkout-items">
+          <% items.forEach(item => { %>
+            <div class="checkout-item">
+              <span><%= item.product.name %> × <%= item.quantity %></span>
+              <span>₹<%= item.subtotal %></span>
+            </div>
+          <% }); %>
+        </div>
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span>₹<%= total %></span>
+        </div>
+        <div class="summary-row">
+          <span>Delivery</span>
+          <span class="free-delivery">FREE</span>
+        </div>
+        <div class="summary-row summary-total">
+          <span>Total</span>
+          <span>₹<%= total %></span>
+        </div>
+
+        <form action="/orders/place" method="POST" id="placeOrderForm">
+          <button type="submit" class="btn btn-primary btn-full" id="placeOrderBtn"
+            <%= addresses.length === 0 ? 'disabled' : '' %>>
+            Place Order
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

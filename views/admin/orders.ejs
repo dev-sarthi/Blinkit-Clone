@@ -1,0 +1,48 @@
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <h1 class="section-title">Manage Orders</h1>
+    </div>
+
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Items</th>
+            <th>Total</th>
+            <th>Payment</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Update Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% orders.forEach(order => { %>
+            <tr id="admin-order-<%= order._id %>">
+              <td><a href="/admin/orders/<%= order._id %>">#<%= order._id.toString().slice(-8).toUpperCase() %></a></td>
+              <td><%= order.user ? order.user.name : 'Unknown' %></td>
+              <td><%= order.items.length %> item<%= order.items.length !== 1 ? 's' : '' %></td>
+              <td>₹<%= order.totalAmount %></td>
+              <td><%= order.paymentMethod === 'cod' ? 'COD' : 'Online' %></td>
+              <td><span class="status-badge status-<%= order.status %>"><%= order.status.replace(/_/g, ' ') %></span></td>
+              <td><%= order.createdAt.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) %></td>
+              <td>
+                <form action="/admin/orders/<%= order._id %>/status" method="POST" class="inline-form">
+                  <select name="status" onchange="this.form.submit()">
+                    <% ['placed','packed','out_for_delivery','delivered','cancelled'].forEach(s => { %>
+                      <option value="<%= s %>" <%= order.status === s ? 'selected' : '' %>><%= s.replace(/_/g, ' ') %></option>
+                    <% }); %>
+                  </select>
+                </form>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+
+    <a href="/admin" class="back-link">← Back to Dashboard</a>
+  </div>
+</section>
