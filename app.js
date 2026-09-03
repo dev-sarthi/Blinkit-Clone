@@ -61,6 +61,7 @@ app.use((req, res, next) => {
 app.use(setUser);
 
 // ─── ROUTES ─────────────────────────────────────────────
+app.get('/health', (req, res) => res.status(200).send('OK'));
 app.get('/', productController.getHome);
 app.use('/auth', authRoutes);
 app.use('/products', productRoutes);
@@ -74,7 +75,7 @@ app.use(notFound);
 app.use(errorHandler);
 
 // ─── START SERVER ───────────────────────────────────────
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   logger.info(`Server running on http://localhost:${PORT}`);
 });
 
