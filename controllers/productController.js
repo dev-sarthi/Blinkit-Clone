@@ -1,5 +1,6 @@
 const Product = require('../models/Product');
 const Category = require('../models/Category');
+const logger = require('../utils/logger');
 
 // GET / — Home page: categories grid + featured products
 exports.getHome = async (req, res) => {
@@ -12,8 +13,9 @@ exports.getHome = async (req, res) => {
 
     res.render('products/home', { title: 'QuickKart — Groceries in Minutes', categories, products });
   } catch (err) {
+    logger.error(`Error loading home page: ${err.message}`);
     req.flash('error', 'Failed to load home page.');
-    res.redirect('/');
+    res.render('products/home', { title: 'QuickKart — Groceries in Minutes', categories: [], products: [] });
   }
 };
 
